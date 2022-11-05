@@ -1,5 +1,6 @@
-# demopythonaca
-Demo application in Python hosted on Azure Container Apps
+# Demo Python app hosted on Azure Container App
+This is a demo application in Python hosted on Azure Container Apps.
+Follow all the steps to deploy the application on Azure.
 
 ## Build the container
 `docker build src\. -t demopythonaca:v1 --platform linux/amd64`
