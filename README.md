@@ -2,7 +2,7 @@
 Demo application in Python hosted on Azure Container Apps
 
 ## Build the container
-`docker build src\. -t demopythonaca:v1`
+`docker build src\. -t demopythonaca:v1 --platform linux/amd64`
 
 ## Run the container locally
 
@@ -47,7 +47,9 @@ Replace the <REGISTRY_USERNAME> with ACR username
 Replace the <REGISTRY_PASSWORD> with ACR password
 
 `
-CONTAINER_IMAGE_NAME=demopythonaca
+RESOURCE_GROUP=demopythonaca-rg
+CONTAINER_IMAGE_NAME=<REGISTRY_SERVER>/demopythonaca:latest
+CONTAINERAPPS_ENVIRONMENT=envzzm5w2yh4rp2a
 REGISTRY_SERVER=<REGISTRY_SERVER>
 REGISTRY_USERNAME=<REGISTRY_USERNAME>
 REGISTRY_PASSWORD=<REGISTRY_PASSWORD>
@@ -55,12 +57,18 @@ REGISTRY_PASSWORD=<REGISTRY_PASSWORD>
 
 ### Create the Container app
 `
-az containerapp create
-  --name my-container-app
-  --resource-group $RESOURCE_GROUP
-  --image $CONTAINER_IMAGE_NAME
-  --environment $CONTAINERAPPS_ENVIRONMENT
-  --registry-server $REGISTRY_SERVER
-  --registry-username $REGISTRY_USERNAME
-  --registry-password $REGISTRY_PASSWORD
+az containerapp create \
+  --name demopythonaca \
+  --resource-group $RESOURCE_GROUP \
+  --image $CONTAINER_IMAGE_NAME \
+  --environment $CONTAINERAPPS_ENVIRONMENT \
+  --registry-server $REGISTRY_SERVER \
+  --registry-username $REGISTRY_USERNAME \
+  --registry-password $REGISTRY_PASSWORD \
+  --ingress external \
+  --target-port 8080 \
+  --transport auto \
+  --query properties.configuration.ingress.fqdn
 `
+
+## Voilà! Your application is deployed on the endpoint shown at the bottom of the command
